@@ -1,0 +1,31 @@
+resource "azurerm_virtual_network" "vnetblock" {
+  name                = "myvnet1"
+  resource_group_name = "myrg1"
+  location            = "East US"
+  address_space       = ["can be specified accordingly "]  #for ex:["10.0.0.0/19"]
+  dns_servers         = ["can be specified accordingly"]   #for ex:["10.0.0.2", "10.0.0.3"]
+}
+
+resource "azurerm_subnet" "subnetblock-1" {
+  name                 = "mysubnet1"
+  resource_group_name  = "myrg1"
+  virtual_network_name = azurerm_virtual_network.vnetblock.name
+  #address_prefixes     = ["10.0.1.0/27"]
+}
+
+resource "azurerm_subnet" "subnetblock-2" {
+  name                 = "mysubnet2"
+  resource_group_name  = "myrg1"
+  virtual_network_name = azurerm_virtual_network.vnetblock.name
+  address_prefixes     = ["10.0.2.0/27"]
+  service_endpoints    = ["Microsoft.Storage", "Microsoft.Sql", "Microsoft.EventHub", "Microsoft.KeyVault"]
+}
+
+#Service endpoints are mandatory.
+#Forced tunneling lets you redirect or "force" all internet-bound traffic from your subnet back to on-premises for inspection and auditing. Commonly, you configure and define your own default route (0.0.0.0/0), forcing all traffic from the API Management subnet to flow through an on-premises firewall or to a network virtual appliance. This traffic flow breaks connectivity with API Management, since outbound traffic is either blocked on-premises, or NAT'd to an unrecognizable set of addresses that no longer work with various Azure endpoints. You can solve this issue via the following methods:
+#Enable service endpoints on the subnet in which the API Management service is deployed for:
+#Azure SQL (required only in the primary region if the API Management service is deployed to multiple regions)
+#Azure Storage
+#Azure Event Hubs
+#Azure Key Vault (required when API Management is deployed on the stv2 platform)
+#By enabling endpoints directly from the API Management subnet to these services, you can use the Microsoft Azure backbone network, providing optimal routing for service traffic. If you use service endpoints with a force tunneled API Management, traffic for the preceding Azure services isn't force tunneled. However, the other API Management service dependency traffic remains force tunneled. Ensure that your firewall or virtual appliance doesn't block this traffic, or the API Management service may not function properly.
