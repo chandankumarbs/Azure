@@ -21,11 +21,11 @@ resource "azurerm_subnet" "subnetblock-2" {
   service_endpoints    = ["Microsoft.Storage", "Microsoft.Sql", "Microsoft.EventHub", "Microsoft.KeyVault"]
 }
 
-#Service endpoints are mandatory.
-#Forced tunneling lets you redirect or "force" all internet-bound traffic from your subnet back to on-premises for inspection and auditing. Commonly, you configure and define your own default route (0.0.0.0/0), forcing all traffic from the API Management subnet to flow through an on-premises firewall or to a network virtual appliance. This traffic flow breaks connectivity with API Management, since outbound traffic is either blocked on-premises, or NAT'd to an unrecognizable set of addresses that no longer work with various Azure endpoints. You can solve this issue via the following methods:
-#Enable service endpoints on the subnet in which the API Management service is deployed for:
-#Azure SQL (required only in the primary region if the API Management service is deployed to multiple regions)
-#Azure Storage
-#Azure Event Hubs
-#Azure Key Vault (required when API Management is deployed on the stv2 platform)
-#By enabling endpoints directly from the API Management subnet to these services, you can use the Microsoft Azure backbone network, providing optimal routing for service traffic. If you use service endpoints with a force tunneled API Management, traffic for the preceding Azure services isn't force tunneled. However, the other API Management service dependency traffic remains force tunneled. Ensure that your firewall or virtual appliance doesn't block this traffic, or the API Management service may not function properly.
+/*Service endpoints are mandatory.
+Forced tunneling lets you redirect or "force" all internet-bound traffic from your subnet back to on-premises for inspection and auditing. Commonly, you configure and define your own default route (0.0.0.0/0), forcing all traffic from the API Management subnet to flow through an on-premises firewall or to a network virtual appliance. This traffic flow breaks connectivity with API Management, since outbound traffic is either blocked on-premises, or NAT'd to an unrecognizable set of addresses that no longer work with various Azure endpoints. You can solve this issue via the following methods:
+Enable service endpoints on the subnet in which the API Management service is deployed for:
+   Azure SQL (required only in the primary region if the API Management service is deployed to multiple regions)
+   Azure Storage
+   Azure Event Hubs
+   Azure Key Vault (required when API Management is deployed on the stv2 platform)
+By enabling endpoints directly from the API Management subnet to these services, you can use the Microsoft Azure backbone network, providing optimal routing for service traffic. If you use service endpoints with a force tunneled API Management, traffic for the preceding Azure services isn't force tunneled. However, the other API Management service dependency traffic remains force tunneled. Ensure that your firewall or virtual appliance doesn't block this traffic, or the API Management service may not function properly.*/
