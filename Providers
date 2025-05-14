@@ -8,6 +8,8 @@ terraform {
 }
 
 provider "azurerm" {
-  features {}
+  features {
+subscription_id = "0000-0000-0000-00000"
+  }
 }
 #provider version can be specified accordingly
